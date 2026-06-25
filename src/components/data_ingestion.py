@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
@@ -7,7 +8,8 @@ from src.components.data_transforamation import datatransformation
 from src.components.data_transforamation import datatransformationconfig
 from sklearn.model_selection import train_test_split   
 from dataclasses import dataclass
-
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
 file_path = os.path.join('MLPROJECT','stud_csv.csv') 
 df = pd.read_csv('stud_csv.csv')
 
@@ -47,4 +49,6 @@ if __name__ == "__main__":
     train_data,test_data = obj.initiate_data_ingestion()
 
     data_transformation = datatransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr,test_arr,_= data_transformation.initiate_data_transformation(train_data, test_data)
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr))
